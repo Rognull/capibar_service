@@ -1,17 +1,14 @@
 package api
 
 import (
-	"6_7/example/internals/app/handlers"
+	"capi_api/internals/app/handlers"
 	"github.com/gorilla/mux"
 )
 
-func CreateRoutes(userHandler *handlers.UsersHandler, carsHandler *handlers.CarsHandler) *mux.Router {
+func CreateRoutes(voteHandler *handlers.VoteHandler) *mux.Router {
 	r := mux.NewRouter() //создадим роутер для обработки путей, он же будет основным роутером для нашего сервера
-
+	r.HandleFunc("/insert", voteHandler.Insert).Methods("POST") //каждая функция реализует один и тот же интерфейс
 	
-
-
-
 
 	// r.HandleFunc("/users/create", userHandler.Create).Methods("POST") //каждая функция реализует один и тот же интерфейс
 	// r.HandleFunc("/users/list", userHandler.List).Methods("GET")

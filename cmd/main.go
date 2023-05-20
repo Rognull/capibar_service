@@ -1,8 +1,8 @@
 package main
 
 import (
-	"6_7/example/internals/app"
-	"6_7/example/internals/cfg"
+	"capi_api/internals/app"
+	"capi_api/internals/cfg"
 	"context"
 	log "github.com/sirupsen/logrus"
 	"os"

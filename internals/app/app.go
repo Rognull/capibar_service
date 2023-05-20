@@ -1,12 +1,12 @@
 package app
 
 import (
-	"6_7/example/api"
-	"6_7/example/api/middleware"
-	db3 "6_7/example/internals/app/db"
-	"6_7/example/internals/app/handlers"
-	"6_7/example/internals/app/processors"
-	"6_7/example/internals/cfg"
+	"capi_api/api"
+	"capi_api/api/middleware"
+	db3 "capi_api/internals/app/db"
+	"capi_api/internals/app/handlers"
+	"capi_api/internals/app/processors"
+	"capi_api/internals/cfg"
 	"context"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"log"
@@ -37,16 +37,21 @@ func (server *AppServer) Serve() {
 		log.Fatalln(err)
 	}
 
-	carsStorage := db3.NewCarStorage(server.db)    //создаем экземпляр storage для работы с бд и всем что связано с машинами
-	usersStorage := db3.NewUsersStorage(server.db) //создаем экземпляр storage для работы с бд и всем что связано с пользователями
+	voteStrorage := db3.NewVoteStorage(server.db)
 
-	carsProcessor := processors.NewCarsProcessor(carsStorage) //инициализируем процессоры соотвествующими storage
-	usersProcessor := processors.NewUsersProcessor(usersStorage)
+	// carsStorage := db3.NewCarStorage(server.db)    //создаем экземпляр storage для работы с бд и всем что связано с машинами
+	// usersStorage := db3.NewUsersStorage(server.db) //создаем экземпляр storage для работы с бд и всем что связано с пользователями
 
-	userHandler := handlers.NewUsersHandler(usersProcessor) //инициализируем handlerы нашими процессорами
-	carsHandler := handlers.NewCarsHandler(carsProcessor)
+	voteProcessor := processors.NewVoteProcessor(voteStrorage)
+	// carsProcessor := processors.NewCarsProcessor(carsStorage) //инициализируем процессоры соотвествующими storage
+	// usersProcessor := processors.NewUsersProcessor(userStorage)
 
-	routes := api.CreateRoutes(userHandler, carsHandler) //хендлеры напрямую используются в путях
+	voteHandler := handlers.NewVoteHandler(voteProcessor)
+
+	// userHandler := handlers.NewUsersHandler(usersProcessor) //инициализируем handlerы нашими процессорами
+	// carsHandler := handlers.NewCarsHandler(carsProcessor)
+
+	routes := api.CreateRoutes(voteHandler) //хендлеры напрямую используются в путях
 	routes.Use(middleware.RequestLog)                    //middleware используем здесь, хотя можно было бы и в CreateRoutes
 
 	server.srv = &http.Server{ //в отличие от примеров http, здесь мы передаем наш server в поле структуры, для работы в Shutdown

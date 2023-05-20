@@ -1,13 +1,14 @@
 package db
 
 import (
-	"6_7/example/internals/app/models"
+	"capi_api/internals/app/models"
 	"context"
-	"errors"
-	"fmt"
-	"github.com/georgysavva/scany/pgxscan"
+	// "errors"
+	// "fmt"
+	// "github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgx/v4/pgxpool"
 	log "github.com/sirupsen/logrus"
+	//"models"
 )
 
 type VoteStorage struct {
