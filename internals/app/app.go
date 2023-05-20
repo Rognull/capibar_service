@@ -39,17 +39,12 @@ func (server *AppServer) Serve() {
 
 	voteStrorage := db3.NewVoteStorage(server.db)
 
-	// carsStorage := db3.NewCarStorage(server.db)    //создаем экземпляр storage для работы с бд и всем что связано с машинами
-	// usersStorage := db3.NewUsersStorage(server.db) //создаем экземпляр storage для работы с бд и всем что связано с пользователями
 
 	voteProcessor := processors.NewVoteProcessor(voteStrorage)
-	// carsProcessor := processors.NewCarsProcessor(carsStorage) //инициализируем процессоры соотвествующими storage
-	// usersProcessor := processors.NewUsersProcessor(userStorage)
 
 	voteHandler := handlers.NewVoteHandler(voteProcessor)
 
-	// userHandler := handlers.NewUsersHandler(usersProcessor) //инициализируем handlerы нашими процессорами
-	// carsHandler := handlers.NewCarsHandler(carsProcessor)
+
 
 	routes := api.CreateRoutes(voteHandler) //хендлеры напрямую используются в путях
 	routes.Use(middleware.RequestLog)                    //middleware используем здесь, хотя можно было бы и в CreateRoutes
@@ -88,4 +83,7 @@ func (server *AppServer) Shutdown() {
 	if err == http.ErrServerClosed {
 		err = nil
 	}
+
+	
+
 }

@@ -5,7 +5,7 @@ import (
 	"capi_api/internals/app/processors"
 	"encoding/json"
 	"fmt"
-	"io"
+	// "io"
 
 	// "errors"
 	// "github.com/gorilla/mux"
@@ -29,19 +29,19 @@ func NewVoteHandler(processor *processors.VoteProcessor) *VoteHandler {
 func (handler *VoteHandler) Insert(w http.ResponseWriter, r *http.Request) {
 	var newVote models.Vote
 
-	b, _ := io.ReadAll(r.Body)
-	// b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
+	// b, _ := io.ReadAll(r.Body)
+	// // b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
 	
 
-	fmt.Println(string(b))
-
+	// fmt.Println(string(b))
 	
 	err := json.NewDecoder(r.Body).Decode(&newVote)
 	if err != nil {
-		fmt.Printf("%s",json.NewDecoder(r.Body).Decode(&newVote))
+		// fmt.Printf("%s",json.NewDecoder(r.Body).Decode(&newVote))
 		WrapError(w, err)
 		return
 	}
+	fmt.Println(newVote)
 	
 	err = handler.processor.CreateVote(newVote)
 	if err != nil {
