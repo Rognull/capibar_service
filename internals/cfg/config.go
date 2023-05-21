@@ -20,10 +20,10 @@ func LoadAndStoreConfig() Cfg {
 	v.SetEnvPrefix("SERV") //префикс, все переменные нашего сервера должны теперь стартовать с SERV_ для того, чтобы не смешиваться с системными
 	v.SetDefault("PORT", "8080")//ставим умолчальные настройки
 	v.SetDefault("DBUSER", "postgres")
-	v.SetDefault("DBPASS", "")
-	v.SetDefault("DBHOST", "")
-	v.SetDefault("DBPORT", "5433")
-	v.SetDefault("DBNAME", "postgres")
+	v.SetDefault("DBPASS", "tmppass")
+	v.SetDefault("DBHOST", "195.133.197.62")
+	v.SetDefault("DBPORT", "3030")
+	v.SetDefault("DBNAME", "capybaras")
 	v.AutomaticEnv()//собираем наши переменные с системных
 
 	var cfg Cfg

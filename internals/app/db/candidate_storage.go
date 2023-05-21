@@ -28,7 +28,7 @@ func NewVoteStorage(pool *pgxpool.Pool) *VoteStorage {
 }
 
 func (storage *VoteStorage) InsertVote(vote models.Vote) error {
-	query := "INSERT INTO Vote (Id_voter, Id_candidate, Id_election) VALUES ($1, $2, $3)"
+	query := "INSERT INTO Vote (peer_id, candidate_id, election_id) VALUES ($1, $2, $3)"
 
 	_, err := storage.databasePool.Exec(context.Background(),query, vote.Id_voter , vote.Id_candidate , vote.Id_election) //транзакция не нужна, у нас только один запрос
 

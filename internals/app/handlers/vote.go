@@ -4,7 +4,6 @@ import (
 	"capi_api/internals/app/models"
 	"capi_api/internals/app/processors"
 	"encoding/json"
-	"fmt"
 	// "io"
 
 	// "errors"
@@ -41,7 +40,6 @@ func (handler *VoteHandler) Insert(w http.ResponseWriter, r *http.Request) {
 		WrapError(w, err)
 		return
 	}
-	fmt.Println(newVote)
 	
 	err = handler.processor.CreateVote(newVote)
 	if err != nil {

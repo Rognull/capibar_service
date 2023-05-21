@@ -8,8 +8,6 @@ import (
 func CreateRoutes(voteHandler *handlers.VoteHandler) *mux.Router {
 	r := mux.NewRouter() //создадим роутер для обработки путей, он же будет основным роутером для нашего сервера
 	r.HandleFunc("/insert", voteHandler.Insert).Methods("POST") //каждая функция реализует один и тот же интерфейс
-	
-
 	// r.HandleFunc("/users/create", userHandler.Create).Methods("POST") //каждая функция реализует один и тот же интерфейс
 	// r.HandleFunc("/users/list", userHandler.List).Methods("GET")
 	// r.HandleFunc("/users/find/{id:[0-9]+}", userHandler.Find).Methods("GET")
