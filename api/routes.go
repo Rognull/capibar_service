@@ -5,12 +5,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func CreateRoutes(voteHandler *handlers.VoteHandler) *mux.Router {
+func CreateRoutes(voteHandler *handlers.VoteHandler, peerHandler *handlers.PeerHandler) *mux.Router {
 	r := mux.NewRouter() //создадим роутер для обработки путей, он же будет основным роутером для нашего сервера
-	r.HandleFunc("/insert", voteHandler.Insert).Methods("POST") //каждая функция реализует один и тот же интерфейс
+	r.HandleFunc("/vote/insert", voteHandler.Insert).Methods("POST") //каждая функция реализует один и тот же интерфейс
 	// r.HandleFunc("/users/create", userHandler.Create).Methods("POST") //каждая функция реализует один и тот же интерфейс
 	// r.HandleFunc("/users/list", userHandler.List).Methods("GET")
-	// r.HandleFunc("/users/find/{id:[0-9]+}", userHandler.Find).Methods("GET")
+	r.HandleFunc("/peer/find/{nickname}", peerHandler.GetPeer).Methods("GET")
 
 	// r.HandleFunc("/cars/create", carsHandler.Create).Methods("POST")
 	// r.HandleFunc("/cars/list", carsHandler.List).Methods("GET")

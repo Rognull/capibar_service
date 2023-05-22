@@ -5,5 +5,5 @@ type Peer struct {
 	NickName    string `json:"nickname"`
 	SchoolEmail string `json:"email"`
 	TribeId     uint64 `json:"tribe"`
-	Code        string `json:"code"`
+	Code        uint64 `json:"code"`
 }
