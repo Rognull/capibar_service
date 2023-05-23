@@ -34,7 +34,5 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-#            docker stop capy_db_handler
-#            docker rm capy_db_handler
             docker pull ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
             docker run -p 3035:8080 --name capy_db_handler -d ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
