@@ -40,11 +40,12 @@ jobs:
             docker run \
             -p 3035:8080 \
             --name capy_db_handler \
-            --user 1001 -d \
+            --user 1001 \
+            -d \
             -e SERV_PORT=8080 \
             -e SERV_DBUSER=postgres \
             -e SERV_DBPASS=tmppass \
-            -e SERV_DBHOST=capy_db \
+            -e SERV_DBHOST=195.133.197.62 \
             -e SERV_DBPORT=3030 \
             -e SERV_DBNAME=capybaras \
             ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
