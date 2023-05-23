@@ -29,12 +29,6 @@ func NewPeerAuthHandler(processor *processors.PeerAuthProcessor) *PeerAuthHandle
 
 func (handler *PeerAuthHandler) Update(w http.ResponseWriter, r *http.Request) {
 	var newPeerAuth models.PeerAuth
-
-	// b, _ := io.ReadAll(r.Body)
-	// // b, err := ioutil.ReadAll(resp.Body)  Go.1.15 and earlier
-	
-
-	// fmt.Println(string(b))
 	
 	err := json.NewDecoder(r.Body).Decode(&newPeerAuth)
 	if err != nil {
