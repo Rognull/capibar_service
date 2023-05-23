@@ -4,6 +4,7 @@ import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
+	"os"
 )
 
 type Cfg struct { //наша структура для хранения конфигов, я полагаюсь на Viper для матчинга имен
@@ -36,5 +37,8 @@ func LoadAndStoreConfig() Cfg {
 }
 
 func (cfg *Cfg) GetDBString() string { //маленький метод для сборки строки соединения с БД
-	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
+	// return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
+	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s",os.Getenv("SERV_DBUSER"),os.Getenv("SERV_DBPASS"),os.Getenv("SERV_DBHOST"),os.Getenv("SERV_DBPORT"),os.Getenv("SERV_DBNAME"))
+	
+	// cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
 }
