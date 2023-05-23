@@ -3,15 +3,16 @@ package db
 import (
 	"capi_api/internals/app/models"
 	"context"
+
 	// "errors"
 	// "fmt"
-	// "github.com/georgysavva/scany/pgxscan"
+	"github.com/georgysavva/scany/pgxscan"
 	"github.com/jackc/pgx/v4/pgxpool"
 	log "github.com/sirupsen/logrus"
 	//"models"
 )
 
-type VoteStorage struct {
+type CandidateStorage struct {
 	databasePool *pgxpool.Pool
 }
 
@@ -21,32 +22,131 @@ type VoteStorage struct {
 // 	Id_Vote_two string `db:"Vote_two"`
 // }
 
-func NewVoteStorage(pool *pgxpool.Pool) *VoteStorage {
-	storage := new(VoteStorage)
+func NewCandidateStorage(pool *pgxpool.Pool) *CandidateStorage {
+	storage := new(CandidateStorage)
 	storage.databasePool = pool
 	return storage
 }
 
-func (storage *VoteStorage) InsertVote(vote models.Vote) error {
-	query := "INSERT INTO Vote (peer_id, candidate_id, election_id) VALUES ($1, $2, $3)"
+// func (storage *CandidateStorage) GetCandidateList(nicknameFilter string, codeFilter string) []models.Candidate { //TODO test
+// 	query := "SELECT peer.nickname AS nickname, peer.code as code  FROM peer WHERE 1=1"
 
-	_, err := storage.databasePool.Exec(context.Background(),query, vote.Id_voter , vote.Id_candidate , vote.Id_election) //транзакция не нужна, у нас только один запрос
+// 	placeholderNum := 1
+// 	args := make([]interface{},0)
+// 	if userIdFilter != 0 { //задаем фильтры через плейсхолдеры
+// 		query += fmt.Sprintf(" AND users.id = $%d", placeholderNum)
+// 		args = append(args, userIdFilter) //сразу же добавляем аргумент для фильтра
+// 		placeholderNum++ //увеличиваем номер плейсхолдеру
+// 	}
+// 	if brandFilter != "" {
+// 		query += fmt.Sprintf(" AND brand ILIKE $%d", placeholderNum)
+// 		args = append(args, fmt.Sprintf("%%%s%%",brandFilter))
+// 		placeholderNum++
+// 	}
+// 	if colourFilter != "" {
+// 		query += fmt.Sprintf(" AND colour ILIKE $%d", placeholderNum)
+// 		args = append(args, fmt.Sprintf("%%%s%%",colourFilter))
+// 		placeholderNum++
+// 	}
+// 	if licenseFilter != "" {
+// 		query += fmt.Sprintf(" AND license_plate ILIKE $%d", placeholderNum)
+// 		args = append(args, fmt.Sprintf("%%%s%%",licenseFilter))
+// 		placeholderNum++
+// 	}
+
+// 	var dbResult []userCar
+
+// 	err := pgxscan.Select(context.Background(), storage.databasePool, &dbResult, query, args...)
+
+// 	if err != nil {
+// 		log.Errorln(err)
+// 	}
+
+// 	result := make([]models.Car, len(dbResult))
+
+// 	for idx, dbEntity := range dbResult {
+// 		result[idx] = convertJoinedQueryToCar(dbEntity) //заполняем результат
+// 	}
+
+// 	return result
+// }
+
+func (storage *CandidateStorage) FindCandidateByNickname(peer_nick string) models.CandidateWithName {
+	query := "SELECT candidate.id, candidate.peer_id, t1.nickname as nickname, convocation_id, promises FROM candidate JOIN peer on candidate.peer_id = peer.id"
+
+	var result models.CandidateWithName
+
+	err := pgxscan.Get(context.Background(), storage.databasePool, &result, query, peer_nick) //забираем по nickname
+	
+	if err != nil {
+		log.Errorln(err)
+	}
+
+	return result
+}
+
+
+func (storage *CandidateStorage) GetCandidateList(Convocation uint64) []models.CandidateWithName { //TODO test
+	query := "SELECT candidate.peer_id, peer.nickname as nickname, convocation_id, promises FROM candidate JOIN peer on candidate.peer_id = peer.id where candidate.convocation_id = $1"
+
+	
+	var dbResult []models.CandidateWithName
+
+	err := pgxscan.Select(context.Background(), storage.databasePool, &dbResult, query, Convocation)
 
 	if err != nil {
 		log.Errorln(err)
-		return err
 	}
-	
-	return nil
+
+	return dbResult
 }
 
 
 
+// func (storage *CarsStorage) CreateCar(car models.Car) error {
+// 	ctx := context.Background()
+// 	tx, err := storage.databasePool.Begin(ctx) //здесь будем пользоваться транзакцией, чтобы проверка пользователей и вставка нового автомобиля выглядели одним запросом с ее точки зрения
+// 	defer func() {
+// 		err = tx.Rollback(context.Background())
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 	}()
 
-// func convertJoinedQueryToCar(input userCar) models.Car { //сворачиваем плоскую структуру в нашу рабочую модель
-// 	return models.Vote{
-// 		Id_voter:Id_voter,
-// 		Id_Vote_one:input.Id_Vote_one,
-// 		Id_Vote_two:input.Id_Vote_two,
+// 	query := "SELECT id FROM peer WHERE nickname = $1"
+
+// 	id := -1
+
+// 	err = pgxscan.Get(ctx, tx, &id, query, car.Owner.Id)
+// 	if err != nil {
+// 		log.Errorln(err)
+// 		err = tx.Rollback(context.Background()) //если получили ошибку откатываем транзакцию целиком
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 		return err
 // 	}
+
+// 	if id == -1 {
+// 		return errors.New("user not found")
+// 	}
+
+// 	insertQuery := "INSERT INTO cars(user_id, colour, brand, license_plate) VALUES ($1,$2,$3,$4)"
+
+// 	_, err = tx.Exec(context.Background(),insertQuery, car.Owner.Id, car.Colour, car.Brand, car.LicensePlate) //вызываем exec НЕ У соединения а У транзакции
+
+// 	if err != nil {
+// 		log.Errorln(err)
+// 		err = tx.Rollback(context.Background())
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 		return err
+// 	}
+// 	err = tx.Commit(context.Background()) // в конце посылаем транзакцию, база сохранит значения, если до этого ничего не было откачено
+// 	if err != nil {
+// 		log.Errorln(err)
+// 	}
+
+// 	return err
 // }

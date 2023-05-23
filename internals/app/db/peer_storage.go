@@ -77,15 +77,13 @@ func (storage *PeerStorage) FindPeerByNickname(peer_nick string) models.Peer {
 	var result models.Peer
 
 	err := pgxscan.Get(context.Background(), storage.databasePool, &result, query, peer_nick) //забираем по nickname
-	
+
 	if err != nil {
 		log.Errorln(err)
 	}
 
 	return result
 }
-
-
 
 // func (storage *CarsStorage) CreateCar(car models.Car) error {
 // 	ctx := context.Background()
@@ -112,7 +110,7 @@ func (storage *PeerStorage) FindPeerByNickname(peer_nick string) models.Peer {
 // 	}
 
 // 	if id == -1 {
-// 		return errors.New("user not found")
+// 		return errors.New("user ")
 // 	}
 
 // 	insertQuery := "INSERT INTO cars(user_id, colour, brand, license_plate) VALUES ($1,$2,$3,$4)"
