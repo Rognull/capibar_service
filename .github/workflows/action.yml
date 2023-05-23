@@ -37,4 +37,14 @@ jobs:
             docker stop capy_db_handler
             docker rm capy_db_handler
             docker pull ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
-            docker run -p 3035:8080 --name capy_db_handler --user 1001 -d ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
+            docker run \
+            -p 3035:8080 \
+            --name capy_db_handler \
+            --user 1001 -d \
+            -e SERV_PORT=8080 \
+            -e SERV_DBUSER=postgres \
+            -e SERV_DBPASS=tmppass \
+            -e SERV_DBHOST=capy_db \
+            -e SERV_DBPORT=3030 \
+            -e SERV_DBNAME=capybaras \
+            ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
