@@ -27,14 +27,14 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: executing remote ssh commands to deploy
-        uses: appleboy/ssh-action@develop
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            docker stop capy_db_handler
-            docker rm capy_db_handler
+#            docker stop capy_db_handler
+#            docker rm capy_db_handler
             docker pull ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
             docker run -p 3035:8080 --name capy_db_handler -d ${{ secrets.DOCKER_USERNAME }}/capy_db_handler:latest
