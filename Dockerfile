@@ -9,9 +9,6 @@ RUN go build -o /main cmd/main.go
 
 FROM gcr.io/distroless/base-debian10
 
-RUN apt-get update
-RUN apt-get -y install bash
-
 WORKDIR /build
 COPY --from=capy /main /main
 EXPOSE 8080
