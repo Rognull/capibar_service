@@ -18,13 +18,13 @@ type Cfg struct { //наша структура для хранения конф
 
 func LoadAndStoreConfig() Cfg {
 	v := viper.New() //создаем экземпляр нашего ридера для Env
-	v.SetEnvPrefix("SERV") //префикс, все переменные нашего сервера должны теперь стартовать с SERV_ для того, чтобы не смешиваться с системными
-	v.SetDefault("PORT", "8080")//ставим умолчальные настройки
-	v.SetDefault("DBUSER", "postgres")
-	v.SetDefault("DBPASS", "tmppass")
-	v.SetDefault("DBHOST", "195.133.197.62")
-	v.SetDefault("DBPORT", "3030")
-	v.SetDefault("DBNAME", "capybaras")
+	// v.SetEnvPrefix("SERV") //префикс, все переменные нашего сервера должны теперь стартовать с SERV_ для того, чтобы не смешиваться с системными
+	// v.SetDefault("PORT", "8080")//ставим умолчальные настройки
+	// v.SetDefault("DBUSER", "postgres")
+	// v.SetDefault("DBPASS", "tmppass")
+	// v.SetDefault("DBHOST", "195.133.197.62")
+	// v.SetDefault("DBPORT", "3030")
+	// v.SetDefault("DBNAME", "capybaras")
 	v.AutomaticEnv()//собираем наши переменные с системных
 
 	var cfg Cfg
