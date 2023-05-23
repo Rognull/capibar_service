@@ -39,15 +39,17 @@ func (server *AppServer) Serve() {
 
 	voteStrorage := db3.NewVoteStorage(server.db)
 	peerStrorage := db3.NewPeerStorage(server.db)
+	peerAuthStrorage := db3.NewPeerAuthStorage(server.db)
 
 	voteProcessor := processors.NewVoteProcessor(voteStrorage)
 	peerProcessor := processors.NewPeerProcessor(peerStrorage)
+	peerAuthProcessor := processors.NewPeerAuthProcessor(peerAuthStrorage)
 
 	voteHandler := handlers.NewVoteHandler(voteProcessor)
 	peerHandler := handlers.NewPeerHandler(peerProcessor)
+	peerAuthHandler := handlers.NewPeerAuthHandler(peerAuthProcessor)
 
-
-	routes := api.CreateRoutes(voteHandler, peerHandler) //хендлеры напрямую используются в путях
+	routes := api.CreateRoutes(voteHandler, peerHandler, peerAuthHandler) //хендлеры напрямую используются в путях
 	routes.Use(middleware.RequestLog)                    //middleware используем здесь, хотя можно было бы и в CreateRoutes
 
 	server.srv = &http.Server{ //в отличие от примеров http, здесь мы передаем наш server в поле структуры, для работы в Shutdown

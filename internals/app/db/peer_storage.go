@@ -84,3 +84,53 @@ func (storage *PeerStorage) FindPeerByNickname(peer_nick string) models.Peer {
 
 	return result
 }
+
+
+
+// func (storage *CarsStorage) CreateCar(car models.Car) error {
+// 	ctx := context.Background()
+// 	tx, err := storage.databasePool.Begin(ctx) //здесь будем пользоваться транзакцией, чтобы проверка пользователей и вставка нового автомобиля выглядели одним запросом с ее точки зрения
+// 	defer func() {
+// 		err = tx.Rollback(context.Background())
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 	}()
+
+// 	query := "SELECT id FROM peer WHERE nickname = $1"
+
+// 	id := -1
+
+// 	err = pgxscan.Get(ctx, tx, &id, query, car.Owner.Id)
+// 	if err != nil {
+// 		log.Errorln(err)
+// 		err = tx.Rollback(context.Background()) //если получили ошибку откатываем транзакцию целиком
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 		return err
+// 	}
+
+// 	if id == -1 {
+// 		return errors.New("user not found")
+// 	}
+
+// 	insertQuery := "INSERT INTO cars(user_id, colour, brand, license_plate) VALUES ($1,$2,$3,$4)"
+
+// 	_, err = tx.Exec(context.Background(),insertQuery, car.Owner.Id, car.Colour, car.Brand, car.LicensePlate) //вызываем exec НЕ У соединения а У транзакции
+
+// 	if err != nil {
+// 		log.Errorln(err)
+// 		err = tx.Rollback(context.Background())
+// 		if err != nil {
+// 			log.Errorln(err)
+// 		}
+// 		return err
+// 	}
+// 	err = tx.Commit(context.Background()) // в конце посылаем транзакцию, база сохранит значения, если до этого ничего не было откачено
+// 	if err != nil {
+// 		log.Errorln(err)
+// 	}
+
+// 	return err
+// }

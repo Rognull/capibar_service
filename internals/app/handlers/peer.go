@@ -5,7 +5,7 @@ import (
 	"capi_api/internals/app/processors"
 	// "encoding/json"
 	// "io"
-
+	// "fmt"
 	"errors"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -69,7 +69,6 @@ func (handler *PeerHandler) GetPeer(w http.ResponseWriter, r *http.Request) {
 	// 	WrapError(w, err)
 	// 	return
 	// }
-
 	user, err := handler.processor.FindPeer(vars["nickname"])
 	if err != nil {
 		WrapError(w, err)

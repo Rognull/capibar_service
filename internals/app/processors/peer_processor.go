@@ -44,7 +44,7 @@ func NewPeerProcessor(storage *db.PeerStorage) *PeerProcessor {
 func (processor *PeerProcessor) FindPeer(peer_nickname string) (models.Peer, error) {
 	peer := processor.storage.FindPeerByNickname(peer_nickname)
 
-	if peer.NickName == "" {
+	if peer.Nickname == "" {
 		return  peer, errors.New("nickname should not be empty")
 	}
 
@@ -52,13 +52,13 @@ func (processor *PeerProcessor) FindPeer(peer_nickname string) (models.Peer, err
 		return peer, errors.New("Email should not be empty")
 	}
 
-	if peer.TribeId < 0 || peer.TribeId > 4 {
+	if peer.Tribe < 0 || peer.Tribe > 4 {
 		return  peer, errors.New("ALKOZAVR TRIBE")
 	} //обязательно должен быть указан бренд
 
-	if peer.Code < 1000 || peer.Code > 9999 {
-		return  peer, errors.New("Code should not be empty")
-	}
+	// if peer.Code < 1000 || peer.Code > 9999 {
+	// 	return  peer, errors.New("Code should not be empty")
+	// }
 
 	return peer, nil
 }
