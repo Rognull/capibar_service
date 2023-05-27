@@ -4,7 +4,12 @@ ADD go.mod .
 ADD go.sum .
 RUN go mod download
 COPY . .
-
+ENV SERV_PORT=8080
+ENV SERV_DBUSER=postgres
+ENV SERV_DBPASS=tmppass
+ENV SERV_DBHOST=capybaras_db
+ENV SERV_DBPORT=3030
+ENV SERV_DBNAME=capybaras
 RUN go build -o /main cmd/main.go
 
 FROM gcr.io/distroless/base-debian10
@@ -15,7 +20,7 @@ EXPOSE 8080
 ENV SERV_PORT=8080
 ENV SERV_DBUSER=postgres
 ENV SERV_DBPASS=tmppass
-ENV SERV_DBHOST=db
+ENV SERV_DBHOST=capybaras_db
 ENV SERV_DBPORT=3030
 ENV SERV_DBNAME=capybaras
 USER noroot:noroot
