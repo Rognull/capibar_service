@@ -34,4 +34,5 @@ jobs:
           key: ${{ secrets.PRIVATE_SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
+            docker-compose pull ${{ secrets.DOCKER_USERNAME }}/capybaras_db_handler:latest
             docker-compose -f ~/capybaras/capy.yml up --no-deps --build db_handler
