@@ -8,7 +8,7 @@ RUN go mod download
 COPY api ./api
 COPY cmd ./cmd
 COPY internals ./internals
-COPY Makefile ./
+COPY ./Makefile ./
 
 RUN CGO_ENABLED=0 GOOS=linux make build
 
