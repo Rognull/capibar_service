@@ -66,7 +66,7 @@ func (server *appServer) Serve(ctx context.Context) error {
 	routes.Use(middleware.RequestLog)                                                       //middleware используем здесь, хотя можно было бы и в CreateRoutes
 
 	server.srv = &http.Server{ //в отличие от примеров http, здесь мы передаем наш server в поле структуры, для работы в Shutdown
-		Addr:    ":" + server.config.Port,
+		Addr:    "0.0.0.0:" + server.config.Port,
 		Handler: routes,
 	}
 
