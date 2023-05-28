@@ -10,6 +10,6 @@ COPY cmd ./
 COPY internals ./
 #COPY . .
 
-RUN go build -o main cmd/main.go
+RUN go build cmd/main.go
 
 CMD ["/main"]
