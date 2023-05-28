@@ -1,9 +1,9 @@
 FROM golang:alpine AS capy
 #WORKDIR /build
-ADD go.mod .
-ADD go.sum .
-RUN go mod download
+#ADD go.mod .
+#ADD go.sum .
 COPY . .
+RUN go mod download
 ENV SERV_PORT=8080
 ENV SERV_DBUSER=postgres
 ENV SERV_DBPASS=tmppass
