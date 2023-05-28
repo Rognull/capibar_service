@@ -35,4 +35,4 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
             docker-compose pull ${{ secrets.DOCKER_USERNAME }}/capybaras_db_handler:latest
-            docker-compose -f ~/capybaras/capy.yml up --no-deps --build db_handler
+            docker-compose -f ~/capybaras/capy.yml up --no-deps --build -d db_handler
