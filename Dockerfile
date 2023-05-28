@@ -10,6 +10,6 @@ COPY cmd ./
 COPY internals ./
 #COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -v ./cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -v cmd/main.go
 
 CMD ["/main"]
