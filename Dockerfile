@@ -17,4 +17,4 @@ COPY . .
 
 RUN go build cmd/main.go
 
-CMD ["/main"]
+CMD ["./main"]
