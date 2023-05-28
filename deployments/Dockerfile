@@ -8,8 +8,7 @@ RUN go mod download
 COPY api ./api
 COPY cmd ./cmd
 COPY internals ./internals
-COPY ./Makefile ./
 
-RUN CGO_ENABLED=0 GOOS=linux make build
+RUN CGO_ENABLED=0 GOOS=linux go build -v ./cmd/main.go
 
 CMD ["./main"]
