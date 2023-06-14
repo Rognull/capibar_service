@@ -11,32 +11,32 @@ import (
 	"github.com/rs/zerolog"
 )
 
-func main() { //точка входа нашего сервера
+func main() { 
 	logger := new(zerolog.Logger)
 
-	config := cfg.LoadAndStoreConfig() //грузим конфигурацию
+	config := cfg.LoadAndStoreConfig()
 
-	ctx, cancel := context.WithCancel(context.Background()) // создаем контекст для работы контекстнозависимых частей системы
+	ctx, cancel := context.WithCancel(context.Background())
 
-	c := make(chan os.Signal, 1) //создаем канал для сигналов системы
+	c := make(chan os.Signal, 1) 
 
-	signal.Notify(c, os.Interrupt) //в случае поступления сигнала завершения - уведомляем наш канал
+	signal.Notify(c, os.Interrupt) 
 
-	server := app.NewServer(config, logger) // создаем сервер
+	server := app.NewServer(config, logger)
 
-	go func() { //горутина для ловли сообщений системы
-		oscall := <-c //если таки что то пришло
+	go func() { 
+		oscall := <-c 
 
 		logger.Info().Msg(fmt.Sprintf("system call:%+v", oscall))
 
-		if err := server.Shutdown(); err != nil { //выключаем сервер
+		if err := server.Shutdown(); err != nil { 
 			logger.Err(err)
 		}
 
-		cancel() //отменяем контекст
+		cancel()
 	}()
 
-	if err := server.Serve(ctx); err != nil { //запускаем сервер
+	if err := server.Serve(ctx); err != nil {
 		logger.Err(err)
 	}
 }

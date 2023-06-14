@@ -24,19 +24,3 @@ func (processor *VoteProcessor) CreateVote(Vote models.Vote) error {
 
 	return processor.storage.InsertVote(Vote)
 }
-
-// func (processor *VoteProcessor) FindVote(id int64) (models.Vote, error) {
-// 	Vote := processor.storage.GetVoteById(id)
-
-// 	if Vote.Id != id {
-// 		return Vote, errors.New("Vote not found")
-// 	}
-
-// 	return Vote, nil
-
-// }
-
-// func (processor *VoteProcessor) ListVotes(nameFilter string) ([]models.Vote, error) {
-// 	return processor.storage.GetVotesList(nameFilter), nil
-// }
-

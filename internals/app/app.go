@@ -23,7 +23,7 @@ type appServer struct {
 	logger *zerolog.Logger
 }
 
-func NewServer(config cfg.Cfg, logger *zerolog.Logger) *appServer { //задаем поля нашего сервера, для его старта нам нужен контекст и конфигурация
+func NewServer(config cfg.Cfg, logger *zerolog.Logger) *appServer { 
 	return &appServer{
 		config: config,
 		logger: logger,
@@ -36,7 +36,7 @@ func (server *appServer) Serve(ctx context.Context) error {
 
 	var err error
 
-	db, err := pgxpool.Connect(ctx, server.config.GetDBString()) //создаем пул соединений с БД и сохраним его для закрытия при остановке приложения
+	db, err := pgxpool.Connect(ctx, server.config.GetDBString()) 
 	if err != nil {
 		server.logger.Err(err)
 
@@ -62,17 +62,17 @@ func (server *appServer) Serve(ctx context.Context) error {
 	peerAuthHandler := handlers.NewPeerAuthHandler(peerAuthProcessor)
 	candidateHandler := handlers.NewCandidateHandler(candidateProcessor)
 
-	routes := api.CreateRoutes(voteHandler, peerHandler, peerAuthHandler, candidateHandler) //хендлеры напрямую используются в путях
-	routes.Use(middleware.RequestLog)                                                       //middleware используем здесь, хотя можно было бы и в CreateRoutes
+	routes := api.CreateRoutes(voteHandler, peerHandler, peerAuthHandler, candidateHandler) 
+	routes.Use(middleware.RequestLog)                                                      
 
-	server.srv = &http.Server{ //в отличие от примеров http, здесь мы передаем наш server в поле структуры, для работы в Shutdown
+	server.srv = &http.Server{
 		Addr:    "0.0.0.0:" + server.config.Port,
 		Handler: routes,
 	}
 
 	server.logger.Info().Msg("Server started.")
 
-	err = server.srv.ListenAndServe() //запускаем сервер
+	err = server.srv.ListenAndServe() 
 
 	if err != nil && err != http.ErrServerClosed {
 		server.logger.Err(err).Msg("Failure while serving")
@@ -88,7 +88,7 @@ func (server *appServer) Shutdown() error {
 
 	ctxShutDown, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 
-	server.db.Close() //закрываем соединение с БД
+	server.db.Close()
 
 	defer func() {
 		cancel()
@@ -96,7 +96,7 @@ func (server *appServer) Shutdown() error {
 
 	var err error
 
-	if err = server.srv.Shutdown(ctxShutDown); err != nil { //выключаем сервер, с ограниченным по времени контекстом
+	if err = server.srv.Shutdown(ctxShutDown); err != nil {
 		server.logger.Err(err)
 
 		err = fmt.Errorf("server shutdown failed %w. ", err)

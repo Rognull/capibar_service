@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-type Cfg struct { //наша структура для хранения конфигов, я полагаюсь на Viper для матчинга имен
+type Cfg struct { 
 	Port   string
 	DbName string
 	DbUser string
@@ -17,29 +17,28 @@ type Cfg struct { //наша структура для хранения конф
 }
 
 func LoadAndStoreConfig() Cfg {
-	v := viper.New() //создаем экземпляр нашего ридера для Env
+	v := viper.New()
 
-	// v.SetEnvPrefix("SERV") //префикс, все переменные нашего сервера должны теперь стартовать с SERV_ для того, чтобы не смешиваться с системными
+	// v.SetEnvPrefix("SERV") 
 	v.SetDefault("PORT", "8080") //ставим умолчальные настройки
 	// v.SetDefault("DBUSER", "postgres")
-	// v.SetDefault("DBPASS", "tmppass")
-	// v.SetDefault("DBHOST", "195.133.197.62")
-	// v.SetDefault("DBPORT", "3030")
-	// v.SetDefault("DBNAME", "capybaras")
-	v.AutomaticEnv() //собираем наши переменные с системных
+	// v.SetDefault("DBPASS", "tmppas")
+	// v.SetDefault("DBHOST", "")
+	// v.SetDefault("DBPORT", "")
+	// v.SetDefault("DBNAME", "capy")
+	v.AutomaticEnv()
 
 	var cfg Cfg
 
-	err := v.Unmarshal(&cfg) //закидываем переменные в cfg после анмаршалинга
+	err := v.Unmarshal(&cfg)
 	if err != nil {
 		log.Panic(err)
 	}
 	return cfg
 }
 
-func (cfg *Cfg) GetDBString() string { //маленький метод для сборки строки соединения с БД
-	// return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
+func (cfg *Cfg) GetDBString() string { 
+
 	return fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("SERV_DBUSER"), os.Getenv("SERV_DBPASS"), os.Getenv("SERV_DBHOST"), os.Getenv("SERV_DBPORT"), os.Getenv("SERV_DBNAME"))
 
-	// cfg.DbUser, cfg.DbPass, cfg.DbHost, cfg.DbPort, cfg.DbName)
 }

@@ -18,8 +18,8 @@ func WrapErrorWithStatus(w http.ResponseWriter, err error, httpStatus int) {
 
 	res, _ := json.Marshal(m)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("X-Content-Type-Options", "nosniff") //даем понять что ответ приходит в формате json
-	w.WriteHeader(httpStatus) //код ошибки
+	w.Header().Set("X-Content-Type-Options", "nosniff") 
+	w.WriteHeader(httpStatus)
 	fmt.Fprintln(w, string(res))
 }
 

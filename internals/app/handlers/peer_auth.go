@@ -4,15 +4,7 @@ import (
 	"capi_api/internals/app/models"
 	"capi_api/internals/app/processors"
 	"encoding/json"
-	// "fmt"
-
-	// "io"
-
-	// "errors"
-	// "github.com/gorilla/mux"
 	"net/http"
-	// "strconv"
-	// "strings"
 )
 
 type PeerAuthHandler struct {
@@ -32,7 +24,6 @@ func (handler *PeerAuthHandler) Update(w http.ResponseWriter, r *http.Request) {
 	
 	err := json.NewDecoder(r.Body).Decode(&newPeerAuth)
 	if err != nil {
-		// fmt.Printf("%s",json.NewDecoder(r.Body).Decode(&newPeerAuth))
 		WrapError(w, err)
 		return
 	}
